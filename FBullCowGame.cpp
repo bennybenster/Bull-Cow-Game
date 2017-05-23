@@ -22,22 +22,45 @@ int32 FBullCowGame::GetMaxTries() const
 };
 
 FBullCowGame::FBullCowGame() // this is the default constructor 
-	{ Reset(); } //constructed from Reset()
+	{ StartNewGame(); } //constructed from StartNewGame
 
-void FBullCowGame::Reset()
+void FBullCowGame::StartNewGame()
 {
-	FString HIDDEN_WORD = StartofGamePrintIntroAndReturnAHiddenWord();
+	FBullCowGame::PrintIntro();
+	int32 UserSuggestedWordLength = FBullCowGame::AskUserForWordLength();
+	FString HIDDEN_WORD = GenerateHiddenWord(UserSuggestedWordLength);
 	bIsThisGameWon = false;
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	return;
 }
 
-FString FBullCowGame::StartofGamePrintIntroAndReturnAHiddenWord()
+int32 FBullCowGame::AskUserForWordLength()
 {
+	//This is to ask the user for the hidden word length required
 	int32 NumberOfLetters = 0;
-	srand(static_cast<unsigned int>(time(NULL)));
-	int32 RandIndex = 0;
+	do {
+		std::cout << "How many letters would you like to try and guess? 3-8?";
+		std::cin >> NumberOfLetters;
+		while (std::cin.fail())
+		{
+			std::cout << "Enter a number between 3 and 8\n";
+			std::cin.clear();   //clear istream
+			std::cin.ignore(std::numeric_limits<int>::max(), '\n');  //repair istream
+			std::cin >> NumberOfLetters; //get user input again
+		}
+		if ((NumberOfLetters < 3) || (NumberOfLetters > 8))
+		{
+			std::cout << "Enter a number between 3 and 8\n";
+		}
+	} while ((NumberOfLetters < 3) || (NumberOfLetters > 8));
+	std::cin.clear();					//something was still in my 'cin'
+	std::cin.ignore(10000, '\n');		//this code clears it (taken from internet)
+	return NumberOfLetters;
+}
+
+void FBullCowGame::PrintIntro()
+{
 	//This is the Intro
 	std::cout << "  Bulls and Cows:                       /;    ;\\" << std::endl;
 	std::cout << "       *A WORD GAME*                __  \\\\____//" << std::endl;
@@ -58,29 +81,15 @@ FString FBullCowGame::StartofGamePrintIntroAndReturnAHiddenWord()
 	std::cout << "     :__\\  \\                   \\  \\  :  \\ " << std::endl;
 	std::cout << "         `^'                    `^'  `-^-'  " << std::endl;
 	std::cout << "Your challenge is to guess an isogram (a word with no duplicate letters)\n\n";
-	
-	//This is to ask the user for the hidden word length required
-	do {
-		std::cout << "How many letters would you like to try and guess? 3-8?";
-		std::cin >> NumberOfLetters;
-		while (std::cin.fail())
-		{
-			std::cout << "Enter a number between 3 and 8\n";
-			std::cin.clear();   //clear istream
-			std::cin.ignore(std::numeric_limits<int>::max(), '\n');  //repair istream
-			std::cin >> NumberOfLetters; //get user input again
-		}
-		if ((NumberOfLetters < 3) || (NumberOfLetters > 8))
-		{
-			std::cout << "Enter a number between 3 and 8\n";
-		}
-	} while ((NumberOfLetters < 3) || (NumberOfLetters > 8));
-	
-	std::cin.clear();					//something was still in my 'cin'
-	std::cin.ignore(10000, '\n');		//this code clears it (taken from internet)
+	return;
+}
 
-	//This is to return a  randomly generated hidden word
-	switch (NumberOfLetters)
+//This is to return a randomly generated hidden word
+FString FBullCowGame::GenerateHiddenWord(int32 WordLength)
+{
+	srand(static_cast<unsigned int>(time(NULL)));
+	int32 RandIndex = 0;
+	switch (WordLength)
 	{
 	case 3:
 		RandIndex = rand() % 157;

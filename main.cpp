@@ -14,7 +14,6 @@ void PrintOutro();
 void PlayGame();
 Ftext GetValidGuess();
 bool AskToPlayAgain();
-int32 GetNumberOfLetters();
 
 FBullCowGame BCGame; //instantiate a new game 
 
@@ -30,7 +29,7 @@ int main()
 		bWantsToPlayAgain = AskToPlayAgain();
 		if (bWantsToPlayAgain) 
 		{
-			BCGame.Reset();
+			BCGame.StartNewGame();
 		}
 	} 
 	while (bWantsToPlayAgain);

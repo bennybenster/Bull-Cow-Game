@@ -33,13 +33,13 @@ public:
 	int32 GetMaxTries() const;
 	int32 GetCurrentTry() const;
 	int32 GetHiddenWordLength() const;
-
 	FString GetHiddenWord() const;
 
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString) const;
 
-	void Reset(); 
+	void StartNewGame(); 
+	void PrintIntro();
 
 	FBullCowCount SubmitValidGuess(FString);
 
@@ -51,8 +51,6 @@ public:
 	FString SevenLetterWordList[134]{ "acquire", "adviser", "another", "anxiety", "anymore", "article", "blanket", "briefly", "cabinet", "capture", "careful", "central", "century", "certain", "chamber", "chapter", "charity", "climate", "clothes", "cluster", "combine", "company", "compare", "complex", "confirm", "consume", "convert", "counter", "country", "courage", "destroy", "display", "dispute", "divorce", "drawing", "exactly", "explain", "factory", "faculty", "failure", "fashion", "fighter", "foreign", "formula", "fortune", "founder", "funeral", "handful", "hearing", "heavily", "himself", "history", "holiday", "housing", "husband", "improve", "include", "instead", "journal", "journey", "justice", "justify", "kitchen", "lawsuit", "leading", "machine", "medical", "miracle", "mistake", "mixture", "musical", "nervous", "network", "nuclear", "organic", "outside", "painful", "painter", "parking", "payment", "penalty", "picture", "plastic", "poverty", "predict", "privacy", "private", "problem", "produce", "product", "profile", "project", "promise", "protein", "provide", "publish", "qualify", "quality", "quickly", "quietly", "rapidly", "reading", "reality", "respond", "roughly", "routine", "scholar", "section", "senator", "shortly", "society", "soldier", "special", "stomach", "storage", "strange", "subject", "surface", "therapy", "towards", "tragedy", "trouble", "typical", "undergo", "uniform", "variety", "various", "version", "victory", "violate", "violent", "wealthy", "whisper", "working" };
 	FString EightLetterWordList[54]{ "absolute", "argument", "behaviour", "birthday", "boundary", "category", "champion", "clothing", "complain", "computer", "consider", "consumer", "creation", "customer", "daughter", "dialogue", "directly", "discover", "distance", "document", "domestic", "dominate", "educator", "favourite", "friendly", "hospital", "industry", "investor", "judgment", "majority", "neighbour", "organize", "personal", "physical", "platform", "powerful", "previous", "province", "purchase", "question", "reaction", "regional", "relation", "romantic", "scenario", "security", "shoulder", "software", "somewhat", "southern", "strongly", "teaching", "thousand", "yourself" };
 
-
-
 private:
 	//see constructor for initialisation
 	
@@ -60,7 +58,9 @@ private:
 	FString MyHiddenWord;
 	bool bIsThisGameWon;
 	
-	FString StartofGamePrintIntroAndReturnAHiddenWord();
+	
+	FString GenerateHiddenWord(int32);
+	int32 AskUserForWordLength();
 
 	//These are called helper functions
 	bool IsIsogram(FString) const;
